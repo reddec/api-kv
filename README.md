@@ -1,6 +1,6 @@
 # API-KV: Simple and Flexible Key-Value Storage API
 
-![apikv-logo.png](_docs%2Fapikv-logo.png)
+![apikv-logo.png](_docs/apikv-logo.png)
 
 Welcome to API-KV, a user-friendly and versatile Key-Value storage API designed with simplicity in mind. Powered by
 SQLite and implemented in Golang, API-KV offers an effortless experience for managing your data.
@@ -15,24 +15,16 @@ Features:
   in your preferred environment.
 - **Unbound experience**: Say goodbye to RAM limitations and the complexities of embedded DB-Per-App. API-KV, allows you
   to store everything on disk while maintaining efficient indexing and automatic removal of expired items.
-- **Namespaces**: No more conflicts between apps or pre-define databases. Organize keys in namespaces, which are
+- **Namespaces**: No more conflicts between apps or pre-defined databases. Organize keys in namespaces, which are
   dynamically created without restrictions.
 
 Self-hosted friendly.
-
-## Getting Started
-
-To try out API-KV, follow these simple steps:
-
-- Download the API-KV binary from our GitHub [releases](https://github.com/reddec/api-kv/releases/latest).
-- Run the binary on your machine.
-- Access the API and start storing and retrieving your key-value data effortlessly.
 
 ## Installation
 
 - Via GitHub [releases](https://github.com/reddec/api-kv/releases/latest)
 - Via Go install: `go install -v github.com/reddec/api-kv/cmd/...@latest`
-- Via Docker image (x64 and arm): `ghcr.io/reddec/api-kv:latest`
+- Via [Docker image](https://github.com/reddec/api-kv/pkgs/container/api-kv) (x64 and arm): `ghcr.io/reddec/api-kv:latest`
 
 ## Usage
 
