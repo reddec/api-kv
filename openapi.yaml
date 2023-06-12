@@ -1,0 +1,179 @@
+openapi: "3.0.1"
+info:
+  title: API KV
+  version: "1"
+  description: |
+    Key-Value simple storage with REST API, focused on storage capacity, not on latency.
+
+servers:
+  - url: /
+
+security:
+  - HeaderAuth: [ ]
+paths:
+  /{namespace}:
+    get:
+      operationId: keys
+      summary: List keys in namespace.
+      description: |
+        List keys in namespace page by page. Iteration may not be consistent if there are updates between pages.
+        
+        At the end of page, operation will return empty list.
+        Iteration order is non-deterministic, but generally tends to be from oldest key to newest key.
+      parameters:
+        - in: path
+          name: namespace
+          description: Key-Value namespace
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: cursor
+          description: Cursor of the previous page, should be passed in from the previous request or absent for new request.
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/batch"
+
+    delete:
+      operationId: deleteNamespace
+      summary: Delete namespace and all keys
+      parameters:
+        - in: path
+          name: namespace
+          description: Key-Value namespace
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: OK
+
+  /{namespace}/{key}:
+    get:
+      operationId: get
+      summary: Get value by key
+      parameters:
+        - in: path
+          name: namespace
+          description: Key-Value namespace
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: key
+          description: Key name
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+
+          headers:
+            X-Ttl:
+              description: Left-over time for TTL in seconds (float)
+              required: false
+              schema:
+                type: number
+                format: float64
+            X-Content-Type:
+              required: true
+              description: Content type, same as was used in Set. It will be used in Content-Type header.
+              schema:
+                type: string
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
+        404:
+          description: Key not found (expired or removed)
+
+    post:
+      operationId: set
+      summary: Create or replace value in namespace
+      parameters:
+        - in: path
+          name: namespace
+          description: Key-Value namespace
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: key
+          description: Key name
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: ttl
+          description: Time-to-live for the key in seconds (floating)
+          schema:
+            type: number
+            format: float64
+            minimum: 0
+          required: false
+      requestBody:
+        description: Key value (should fit RAM)
+        required: true
+        content:
+          "*/*":
+            schema:
+              type: string
+              format: binary
+      responses:
+        204:
+          description: Record created
+
+    delete:
+      operationId: delete
+      summary: Delete key. Does nothing if key not exists.
+      parameters:
+        - in: path
+          name: namespace
+          description: Key-Value namespace
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: key
+          description: Key name
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Removed
+
+
+components:
+  schemas:
+    batch:
+      type: object
+      properties:
+        keys:
+          description: Keys list
+          type: array
+          items:
+            type: string
+
+        cursor:
+          description: Cursor used for pagination
+          type: integer
+          format: int64
+      required:
+        - keys
+        - cursor
+  securitySchemes:
+    HeaderAuth:
+      type: apiKey
+      in: header
+      name: X-Api-Key
