@@ -1,9 +1,9 @@
-# API-KV: Simple and Flexible Key-Value Storage API
+# API-KV: Simple and Flexible Key-Value Storage
 
 ![apikv-logo.png](_docs/apikv-logo.png)
 
-Welcome to API-KV, a user-friendly and versatile Key-Value storage API designed with simplicity in mind. Powered by
-SQLite and implemented in Golang, API-KV offers an effortless experience for managing your data.
+Welcome to API-KV, a user-friendly and versatile Key-Value storage designed with simplicity and API-first in mind.
+Powered by SQLite and implemented in Golang, API-KV offers an effortless experience for managing your data.
 
 Features:
 
@@ -24,14 +24,15 @@ Self-hosted friendly.
 
 - Via GitHub [releases](https://github.com/reddec/api-kv/releases/latest)
 - Via Go install: `go install -v github.com/reddec/api-kv/cmd/...@latest`
-- Via [Docker image](https://github.com/reddec/api-kv/pkgs/container/api-kv) (x64 and arm): `ghcr.io/reddec/api-kv:latest`
+- Via [Docker image](https://github.com/reddec/api-kv/pkgs/container/api-kv) (x64 and
+  arm): `ghcr.io/reddec/api-kv:latest`
 
 ## Usage
 
 - [OpenAPI spec](openapi.yaml)
 - [Live docs](https://elements-demo.stoplight.io/?spec=https://raw.githubusercontent.com/reddec/api-kv/master/openapi.yaml)
-- [![](https://godoc.org/github.com/reddec/api-kv/api/client?status.svg)](http://godoc.org/github.com/reddec/api-kv/api/client) generated Go API client
-
+- [![](https://godoc.org/github.com/reddec/api-kv/api/client?status.svg)](http://godoc.org/github.com/reddec/api-kv/api/client)
+  generated Go API client
 
 Basic rules of URL: `/<namespace>/<key>`, and content is value.
 
