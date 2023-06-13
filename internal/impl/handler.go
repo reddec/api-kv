@@ -73,6 +73,10 @@ func (srv *Server) Set(ctx context.Context, req *api.SetReqWithContentType, para
 	if err != nil {
 		return err
 	}
+	contentType := req.ContentType
+	if contentType == "" {
+		contentType = "application/octet-stream"
+	}
 	var args = dbo.PutParams{
 		Namespace:   params.Namespace,
 		Key:         params.Key,
@@ -141,6 +145,5 @@ func (ctm *contentTypeMapper) setHeader() {
 	if ct == "" {
 		return
 	}
-	ctm.real.Header().Del("X-Content-Type")
 	ctm.real.Header().Set("Content-Type", ct)
 }
