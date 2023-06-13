@@ -60,6 +60,45 @@ Delete namespace
 
     curl -v -X DELETE -H 'X-Api-Key: changeme' http://127.0.0.1:8080/demo
 
+### Go client
+
+```go
+// errors omitted for demonstration purpose
+kv, _ := client.Dial("https://example.com", "my-app", "my-secret-token")
+
+// set item
+_ = kv.Set(ctx, "foo", []byte("bar"))
+_ = kv.Set(ctx, "bar", []byte("baz"))
+
+// set item with expiration
+_ = kv.SetExpire(ctx, "alice", []byte("bob"), time.Minute)
+
+// get item
+value, _ := kv.Get(ctx, "foo")
+
+// delete item
+_ = kv.Delete(ctx, "foo")
+
+// errors omitted for demonstration purpose
+kv, _ := Dial("https://example.com", "my-app", "deadbeaf")
+
+// iterate
+it := kv.Keys()
+for it.Next(ctx) {
+    for _, key := range it.Keys() {
+        fmt.Println(key)
+    }
+}
+
+// check errors
+if it.Error() != nil {
+    panic(it.Error())
+}
+
+// destroy namespace
+_ = kv.Destroy(ctx)
+```
+
 ## Configuration
 
 `api-kv serve`
